@@ -33,6 +33,19 @@ class ItemDataService {
   añadirCarrito(info){
     return http.post('/cart',info);
   }
+  getcarrito(){
+    return http.get('/cart');
+  }
+  clearCarro(){
+    return http.delete('/cart');
+  }
+  deleteAllCarro() {
+    return http.delete(`/cart`);
+  }
+  removeFromCart(id)
+  {
+    return http.delete(`/cart?id=${id}`)
+  }
   
 }
 

@@ -12,6 +12,9 @@
         <li class="nav-item">
           <router-link to="/carrito" class="nav-link">Carrito</router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/marketplace" class="nav-link">MarketPlace</router-link>
+        </li>
       </div>
     </nav>
 

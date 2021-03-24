@@ -12,7 +12,16 @@
           name="title"
         />
       </div>
-
+<div class="form-group">
+        <label for="id">Id</label>
+        <input
+          class="form-control"
+          id="id"
+          required
+          v-model="item.id"
+          name="id"
+        />
+      </div>
       <div class="form-group">
         <label for="description">Description</label>
         <input
@@ -23,7 +32,46 @@
           name="description"
         />
       </div>
-
+      <div class="form-group">
+        <label for="Cantidad">Cantidad</label>
+        <input
+          class="form-control"
+          id="Cantidad"
+          required
+          v-model="item.Cantidad"
+          name="Cantidad"
+        />
+      </div>
+      <div class="form-group">
+        <label for="image">image</label>
+        <input
+          class="form-control"
+          id="image"
+          required
+          v-model="item.image"
+          name="image"
+        />
+      </div>
+      <div class="form-group">
+        <label for="precio">precio</label>
+        <input
+          class="form-control"
+          id="precio"
+          required
+          v-model="item.precio"
+          name="precio"
+        />
+      </div>
+      <div class="form-group">
+        <label for="novedad">novedad</label>
+        <input
+          class="form-control"
+          id="novedad"
+          required
+          v-model="item.novedad"
+          name="novedad"
+        />
+      </div>
       <button @click="saveItem" class="btn btn-success">Submit</button>
     </div>
 
@@ -53,8 +101,13 @@ export default {
   methods: {
     saveItem() {
       var data = {
+        id: this.item.id,
         title: this.item.title,
-        description: this.item.description
+        description: this.item.description,
+        Cantidad: this.item.Cantidad,
+        image: this.item.image,
+        novedad: this.item.novedad,
+        precio: this.item.precio
       };
 
       ItemDataService.create(data)

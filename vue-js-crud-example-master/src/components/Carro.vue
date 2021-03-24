@@ -1,41 +1,21 @@
 <template>
-  <div v-if="currentItem" class="edit-form">
-    <h4>Carro</h4>
-    <h4>Novetats</h4>
-      <table class="list-group" v-for="(item, index) in cart" :key="index">
-        <th class="list-group-item" :class="{ active: index == currentIndex }" v-if="item.Cantidad > 0" > 
+<div>
+<h4>Carro</h4>
+<table class="list-group" v-for="(item, index) in items" :key="index">
+        <th class="list-group-item" :class="{ active: index == currentIndex }"> 
        <p>
             {{ item.title }}</p>
             <img v-bind:src="item.image" />
-            <p>Precio:{{ item.price}}</p>
-            <select>
-                <option v-for="iterator in item.Cantidad" :value="iterator" v-bind:key="item.id">{{iterator}}</option> 
-            </select>
-            
-            <button class="btn btn-outline-secondary" type="button" @click="comprar(item)"
-          >
-            Comprar
-          </button>
+            <p>{{ item.price}}</p>
+            <p>Cantidad Maxima: {{item.Cantidad}}</p>
+            <input :max="item.cantidad" type="number">
+             <button class="btn btn-success" @click="removeItem(item.id)">Remove Item</button>
+          </th>
+          </table>
+          <button></button>
+</div>
+  
 
-    <button class="badge badge-danger mr-2"
-      @click="deleteItem"
-    >
-      Delete
-    </button>
-    </th>
-</table>
-    <button type="submit" class="badge badge-success"
-      @click="updateItem"
-    >
-      Update
-    </button>
-    <p>{{ message }}</p>
-  </div>
-
-  <div v-else>
-    <br />
-    <p>Please click on a Item...</p>
-  </div>
 </template>
 
 <script>
@@ -44,13 +24,34 @@ import ItemDataService from "../services/ItemDataService";
 export default {
   name: "Item",
   data() {
-    return {
+   return {
+      items: [],
       currentItem: null,
-      message: ''
+      currentIndex: -1,
+      title: ""
     };
   },
   methods: {
-    getItem(id) {
+    retrieveItems() {
+      ItemDataService.getcarrito()
+        .then(response => {
+          this.items = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+
+    refreshList() {
+      this.retrieveItems();
+      this.currentItem = null;
+      this.currentIndex = -1;
+    },
+
+    removeItem(id) {
+      ItemDataService.removeFromCart(id);
+      this.refreshList();
       ItemDataService.get(id)
         .then(response => {
           this.currentItem = response.data;
@@ -61,50 +62,46 @@ export default {
         });
     },
 
-    updatePublished(reduction) {
-      var data = {
-        id: this.currentItem.id,
-        title: this.currentItem.title,
-        description: this.currentItem.description,
-        Cantidad: this.currentItem.Cantidad - reduction,
-        image: this.currentItem.image,
-        novedad: this.currentItem.novedad
-      };
+    setActiveItem(item, index) {
+      this.currentItem = item;
+      this.currentIndex = index;
+    },
 
-      ItemDataService.update(this.currentItem.id, data)
+    removeAllItems() {
+      ItemDataService.deleteAll()
         .then(response => {
           console.log(response.data);
+          this.refreshList();
         })
         .catch(e => {
           console.log(e);
         });
     },
-
-    updateItem() {
-      ItemDataService.update(this.currentItem.id, this.currentItem)
-        .then(response => {
+    comprar(item){
+      ItemDataService.añadirCarrito(item)
+      .then(response => {
+          this.items = response.data;
           console.log(response.data);
-          this.message = 'The Item was updated successfully!';
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-
-    deleteItem() {
-      ItemDataService.delete(this.currentItem.id)
-        .then(response => {
-          console.log(response.data);
-          this.$router.push({ name: "Items" });
         })
         .catch(e => {
           console.log(e);
         });
     }
+
+    },
+    searchTitle() {
+      ItemDataService.findByTitle(this.title)
+        .then(response => {
+          this.items = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    
   },
   mounted() {
-    this.message = '';
-    this.getItem(this.$route.params.id);
+    this.retrieveItems();
   }
 };
 </script>

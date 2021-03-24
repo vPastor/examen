@@ -2,10 +2,16 @@
   <div class="list row">
     <div class="col-md-8">
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by title"
-          v-model="title"/>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search by title"
+          v-model="title"
+        />
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
             @click="searchTitle"
           >
             Search
@@ -16,7 +22,8 @@
     <div class="col-md-6">
       <h4>Items Chart</h4>
       <ul class="list-group">
-        <li class="list-group-item"
+        <li
+          class="list-group-item"
           :class="{ active: index == currentIndex }"
           v-for="(item, index) in items"
           :key="index"
@@ -29,6 +36,11 @@
       <button class="m-3 btn btn-sm btn-danger" @click="removeAllItems">
         Remove All
       </button>
+      <router-link
+          :to="'/addItem'"
+          class="badge badge-warning"
+          >New Item</router-link
+        >
     </div>
     <div class="col-md-6">
       <div v-if="currentItem">
@@ -37,19 +49,25 @@
           <label><strong>Title:</strong></label> {{ currentItem.title }}
         </div>
         <div>
-          <label><strong>Description:</strong></label> {{ currentItem.description }}
+          <label><strong>Description:</strong></label>
+          {{ currentItem.description }}
         </div>
         <div>
-          <label><strong>Cantidad:</strong></label> {{ currentItem.Cantidad}}
+          <label><strong>Cantidad:</strong></label> {{ currentItem.Cantidad }}
         </div>
-         <div>
-          <label><strong>Precio:</strong></label> {{ currentItem.price}}
+        <div>
+          <label><strong>Precio:</strong></label> {{ currentItem.price }}
         </div>
-         <div>
-          <label><strong>Imagen:</strong></label> <img v-bind:src="currentItem.image" /> 
+        <div>
+          <label><strong>Imagen:</strong></label>
+          <img v-bind:src="currentItem.image" />
         </div>
 
-        <router-link :to="'/items/' + currentItem.id" class="badge badge-warning">Edit</router-link>
+        <router-link
+          :to="'/items/' + currentItem.id"
+          class="badge badge-warning"
+          >Edit</router-link
+        >
       </div>
       <div v-else>
         <br />
@@ -69,21 +87,24 @@ export default {
       items: [],
       currentItem: null,
       currentIndex: -1,
-      title: ""
+      title: "",
     };
   },
   methods: {
     retrieveItems() {
       ItemDataService.getAll()
-        .then(response => {
+        .then((response) => {
           this.items = response.data;
           console.log(response.data);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
-
+    clearcarro() {
+      ItemDataService.clearCarro();
+      ItemDataService.deleteAllCarro();
+    },
     refreshList() {
       this.retrieveItems();
       this.currentItem = null;
@@ -97,29 +118,30 @@ export default {
 
     removeAllItems() {
       ItemDataService.deleteAll()
-        .then(response => {
+        .then((response) => {
           console.log(response.data);
           this.refreshList();
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
-    
+
     searchTitle() {
       ItemDataService.findByTitle(this.title)
-        .then(response => {
+        .then((response) => {
           this.items = response.data;
           console.log(response.data);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
-    }
+    },
   },
   mounted() {
     this.retrieveItems();
-  }
+    this.clearcarro();
+  },
 };
 </script>
 

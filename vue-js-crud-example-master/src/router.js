@@ -45,7 +45,7 @@ export default new Router({
       component: () => import("./components/ItemsMarketPlace")
     },
     {
-      path: "/carrito/:id",
+      path: "/carrito",
       name: "carro-details",
       component: () => import("./components/Carro")
     },
@@ -54,6 +54,18 @@ export default new Router({
       name: "/novetats",
       alias:"/novetats",
       component: () => import("./components/Novetats")
+    },
+    {
+      path: "/addItem",
+      name: "/addItem",
+      alias:"/addItem",
+      component: () => import("./components/AddItem")
+    },
+    {
+      path: "/marketplace",
+      name: "/marketplace",
+      alias:"/marketplace",
+      component: () => import("./components/ItemsMarketPlace")
     }
   ]
 });

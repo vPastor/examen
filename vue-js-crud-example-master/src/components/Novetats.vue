@@ -26,7 +26,7 @@
             Comprar
           </button>
             
-<router-link :to="'/carrito/' + currentItem.id" class="badge badge-warning">Comprar</router-link>
+<router-link :to="'/carrito/' + item.id" class="badge badge-warning">Comprar</router-link>
         
           
         </th>
@@ -111,6 +111,7 @@ export default {
       .then(response => {
           this.items = response.data;
           console.log(response.data);
+          this.refreshList();
         })
         .catch(e => {
           console.log(e);
