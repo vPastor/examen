@@ -12,7 +12,7 @@
              <button class="btn btn-success" @click="removeItem(item.id)">Remove Item</button>
           </th>
           </table>
-          <button></button>
+          <button @click="console.log('YA HAS HECHO TU COMPRA!')" >COMPRAR</button>
 </div>
   
 
